@@ -1,6 +1,6 @@
-module XmlConverter
+module xmlConverter
 
-go 1.21.1
+go 1.19
 
 require github.com/xuri/excelize/v2 v2.8.0
 

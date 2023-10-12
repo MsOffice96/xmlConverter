@@ -62,6 +62,9 @@ func (x *Xml0) XmlOutPut() string {
 type Xml0End struct {
 	Tag     string
 	endData string
+	unit    string
+	typee   string
+	format  string
 }
 
 func (x *Xml0End) GetTag() string {
@@ -123,6 +126,9 @@ func (x *Xml1) XmlOutPut() string {
 type Xml1End struct {
 	Tag     string
 	endData string
+	unit    string
+	typee   string
+	format  string
 }
 
 func (x *Xml1End) GetTag() string {
@@ -182,6 +188,9 @@ func (x *Xml2) XmlOutPut() string {
 type Xml2End struct {
 	Tag     string
 	endData string
+	unit    string
+	typee   string
+	format  string
 }
 
 func (x *Xml2End) GetTag() string {
@@ -201,7 +210,19 @@ func (x *Xml2End) FindLevel3String(tag string) XmlLevel3 {
 }
 
 func (x *Xml2End) XmlOutPut() string {
-	return fmt.Sprintf("<%s>%s</%s>", x.Tag, x.endData, x.Tag)
+	var xmlFrontTag string
+	xmlFrontTag += fmt.Sprintf("<%s", x.Tag)
+	if x.typee != "" {
+		xmlFrontTag += fmt.Sprintf(" type=\"%s\"", x.typee)
+	}
+	if x.unit != "" {
+		xmlFrontTag += fmt.Sprintf(" unit=\"%s\"", x.unit)
+	}
+	if x.format != "" {
+		xmlFrontTag += fmt.Sprintf(" format=\"%s\"", x.format)
+	}
+
+	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.endData, x.Tag)
 
 }
 
@@ -258,6 +279,9 @@ func (x *Xml3) XmlOutPut() string {
 type Xml3End struct {
 	Tag     string
 	endData string
+	unit    string
+	typee   string
+	format  string
 }
 
 func (x *Xml3End) GetTag() string {
@@ -277,7 +301,19 @@ func (x *Xml3End) FindLevel4String(tag string) XmlLevel4 {
 }
 
 func (x *Xml3End) XmlOutPut() string {
-	return fmt.Sprintf("<%s>%s</%s>", x.Tag, x.endData, x.Tag)
+	var xmlFrontTag string
+	xmlFrontTag += fmt.Sprintf("<%s", x.Tag)
+	if x.typee != "" {
+		xmlFrontTag += fmt.Sprintf(" type=\"%s\"", x.typee)
+	}
+	if x.unit != "" {
+		xmlFrontTag += fmt.Sprintf(" unit=\"%s\"", x.unit)
+	}
+	if x.format != "" {
+		xmlFrontTag += fmt.Sprintf(" format=\"%s\"", x.format)
+	}
+
+	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.endData, x.Tag)
 }
 
 // Level 4
@@ -333,6 +369,9 @@ func (x *Xml4) XmlOutPut() string {
 type Xml4End struct {
 	Tag     string
 	endData string
+	unit    string
+	typee   string
+	format  string
 }
 
 func (x *Xml4End) GetTag() string {
@@ -352,56 +391,246 @@ func (x *Xml4End) FindLevel5String(tag string) XmlLevel5 {
 }
 
 func (x *Xml4End) XmlOutPut() string {
-	return fmt.Sprintf("<%s>%s</%s>", x.Tag, x.endData, x.Tag)
+	var xmlFrontTag string
+	xmlFrontTag += fmt.Sprintf("<%s", x.Tag)
+	if x.typee != "" {
+		xmlFrontTag += fmt.Sprintf(" type=\"%s\"", x.typee)
+	}
+	if x.unit != "" {
+		xmlFrontTag += fmt.Sprintf(" unit=\"%s\"", x.unit)
+	}
+	if x.format != "" {
+		xmlFrontTag += fmt.Sprintf(" format=\"%s\"", x.format)
+	}
+
+	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.endData, x.Tag)
 }
 
 // level 5
 type XmlLevel5 interface {
 	GetTag() string
-	// SetLevel6(XmlLevel5)
-	// FindLevel5(XmlLevel5) XmlLevel5
-	// FindLevel5String(string) XmlLevel5
+	SetLevel6(XmlLevel6)
+	FindLevel6(XmlLevel6) XmlLevel6
+	FindLevel6String(string) XmlLevel6
 	XmlOutPut() string
 }
 
 type Xml5 struct {
-	Tag string
-	// xmlLevel5 []XmlLevel6
+	Tag       string
+	xmlLevel6 []XmlLevel6
 }
 
 func (x *Xml5) GetTag() string {
 	return x.Tag
 }
 
+func (x *Xml5) SetLevel6(x6 XmlLevel6) {
+	x.xmlLevel6 = append(x.xmlLevel6, x6)
+}
+
+func (x *Xml5) FindLevel6(x6 XmlLevel6) XmlLevel6 {
+	for _, xx6 := range x.xmlLevel6 {
+		if xx6.GetTag() == x6.GetTag() {
+			return xx6
+		}
+	}
+	return nil
+}
+
+func (x *Xml5) FindLevel6String(tag string) XmlLevel6 {
+	for _, xx6 := range x.xmlLevel6 {
+		if xx6.GetTag() == tag {
+			return xx6
+		}
+	}
+	return nil
+}
+
 func (x *Xml5) XmlOutPut() string {
-	return fmt.Sprintf("<%s>%s</%s>", x.Tag, "???", x.Tag)
+	var TotalTag string
+	TotalTag += fmt.Sprintf("<%s>", x.Tag)
+	for _, level6 := range x.xmlLevel6 {
+		TotalTag += level6.XmlOutPut()
+	}
+	TotalTag += fmt.Sprintf("</%s>", x.Tag)
+	return TotalTag
 }
 
 type Xml5End struct {
 	Tag     string
 	endData string
+	unit    string
+	typee   string
+	format  string
 }
 
 func (x *Xml5End) GetTag() string {
-	return x.Tag
+	return x.endData
+}
+
+func (x *Xml5End) SetLevel6(xml6 XmlLevel6) {
+
+}
+
+func (x *Xml5End) FindLevel6(x6 XmlLevel6) XmlLevel6 {
+	return nil
+}
+
+func (x *Xml5End) FindLevel6String(tag string) XmlLevel6 {
+	return nil
 }
 
 func (x *Xml5End) XmlOutPut() string {
-	return fmt.Sprintf("<%s>%s</%s>", x.Tag, x.endData, x.Tag)
+	var xmlFrontTag string
+	xmlFrontTag += fmt.Sprintf("<%s", x.Tag)
+	if x.typee != "" {
+		xmlFrontTag += fmt.Sprintf(" type=\"%s\"", x.typee)
+	}
+	if x.unit != "" {
+		xmlFrontTag += fmt.Sprintf(" unit=\"%s\"", x.unit)
+	}
+	if x.format != "" {
+		xmlFrontTag += fmt.Sprintf(" format=\"%s\"", x.format)
+	}
+
+	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.endData, x.Tag)
+}
+
+// Level 6
+type XmlLevel6 interface {
+	GetTag() string
+	SetLevel7(XmlLevel7)
+	FindLevel7(XmlLevel7) XmlLevel7
+	FindLevel7String(string) XmlLevel7
+	XmlOutPut() string
+}
+
+type Xml6 struct {
+	Tag       string
+	xmlLevel7 []XmlLevel7
+}
+
+func (x *Xml6) GetTag() string {
+	return x.Tag
+}
+
+func (x *Xml6) SetLevel7(xml7 XmlLevel7) {
+	x.xmlLevel7 = append(x.xmlLevel7, xml7)
+}
+
+func (x *Xml6) FindLevel7(xml7 XmlLevel7) XmlLevel7 {
+	for _, xx7 := range x.xmlLevel7 {
+		if xx7.GetTag() == xml7.GetTag() {
+			return xx7
+		}
+	}
+	return nil
+}
+
+func (x *Xml6) FindLevel7String(tag string) XmlLevel7 {
+	for _, xx7 := range x.xmlLevel7 {
+		if xx7.GetTag() == tag {
+			return xx7
+		}
+	}
+	return nil
+}
+
+func (x *Xml6) XmlOutPut() string {
+	var TotalTag string
+	TotalTag += fmt.Sprintf("<%s>", x.Tag)
+	for _, level6 := range x.xmlLevel7 {
+		TotalTag += level6.XmlOutPut()
+	}
+	TotalTag += fmt.Sprintf("</%s>", x.Tag)
+	return TotalTag
+}
+
+type Xml6End struct {
+	Tag     string
+	endData string
+	unit    string
+	typee   string
+	format  string
+}
+
+func (x *Xml6End) GetTag() string {
+	return x.endData
+}
+
+func (x *Xml6End) SetLevel7(xml7 XmlLevel7) {
+
+}
+
+func (x *Xml6End) FindLevel7(x7 XmlLevel7) XmlLevel7 {
+	return nil
+}
+
+func (x *Xml6End) FindLevel7String(tag string) XmlLevel7 {
+	return nil
+}
+
+func (x *Xml6End) XmlOutPut() string {
+	var xmlFrontTag string
+	xmlFrontTag += fmt.Sprintf("<%s", x.Tag)
+	if x.typee != "" {
+		xmlFrontTag += fmt.Sprintf(" type=\"%s\"", x.typee)
+	}
+	if x.unit != "" {
+		xmlFrontTag += fmt.Sprintf(" unit=\"%s\"", x.unit)
+	}
+	if x.format != "" {
+		xmlFrontTag += fmt.Sprintf(" format=\"%s\"", x.format)
+	}
+
+	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.endData, x.Tag)
+}
+
+type XmlLevel7 interface {
+	GetTag() string
+	XmlOutPut() string
+}
+
+type Xml7End struct {
+	Tag     string
+	endData string
+	unit    string
+	typee   string
+	format  string
+}
+
+func (x *Xml7End) GetTag() string {
+	return x.Tag
+}
+
+func (x *Xml7End) XmlOutPut() string {
+	var xmlFrontTag string
+	xmlFrontTag += fmt.Sprintf("<%s", x.Tag)
+	if x.typee != "" {
+		xmlFrontTag += fmt.Sprintf(" type=\"%s\"", x.typee)
+	}
+	if x.unit != "" {
+		xmlFrontTag += fmt.Sprintf(" unit=\"%s\"", x.unit)
+	}
+	if x.format != "" {
+		xmlFrontTag += fmt.Sprintf(" format=\"%s\"", x.format)
+	}
+
+	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.endData, x.Tag)
 }
 
 // Test All Include Data
-type XmlLevelX interface {
-	GetTag() string
-	SetNextLevel()
-}
-
-type XmlX struct {
-	Tag       string
-	NextLevel []XmlX
-}
-
-type XmlEnd struct {
-	Tag     string
-	endData string
-}
+// type XmlLevelX interface {
+// GetTag() string
+// SetNextLevel()
+// }
+//
+// type XmlX struct {
+// Tag       string
+// NextLevel []XmlX
+// }
+//
+// type XmlEnd struct {
+// Tag     string
+// endData string
+// }
