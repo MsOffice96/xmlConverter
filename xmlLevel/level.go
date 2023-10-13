@@ -4,6 +4,19 @@ import (
 	"fmt"
 )
 
+type TotalXml struct {
+	XmlLevels []XmlLevel
+}
+
+func (tx *TotalXml) FindXmlTopLevel(tag string) XmlLevel {
+	for _, toplevel := range tx.XmlLevels {
+		if toplevel.GetTag() == tag {
+			return toplevel
+		}
+	}
+	return nil
+}
+
 type XmlLevel interface {
 	GetTag() string
 	SetNextLevel(XmlLevel)
@@ -15,6 +28,13 @@ type XmlLevel interface {
 type Xml struct {
 	Tag        string
 	NextLevels []XmlLevel
+}
+
+func NewXml(tag string) *Xml {
+	xml := &Xml{
+		Tag: tag,
+	}
+	return xml
 }
 
 func (x *Xml) GetTag() string {
@@ -55,14 +75,25 @@ func (x *Xml) XmlOutPut() string {
 
 type XmlEnd struct {
 	Tag     string
-	endData string
+	EndData string
 	unit    string
 	typee   string
 	format  string
 }
 
+func NewXmlEnd(tag, enddata, unit, typee, format string) *XmlEnd {
+	xmlend := &XmlEnd{
+		Tag:     tag,
+		EndData: enddata,
+		unit:    unit,
+		typee:   typee,
+		format:  format,
+	}
+	return xmlend
+}
+
 func (x *XmlEnd) GetTag() string {
-	return x.endData
+	return x.EndData
 }
 
 func (x *XmlEnd) SetNextLevel(nextlevel XmlLevel) {
@@ -90,5 +121,5 @@ func (x *XmlEnd) XmlOutPut() string {
 		xmlFrontTag += fmt.Sprintf(" format=\"%s\"", x.format)
 	}
 
-	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.endData, x.Tag)
+	return xmlFrontTag + fmt.Sprintf(">%s</%s>", x.EndData, x.Tag)
 }
