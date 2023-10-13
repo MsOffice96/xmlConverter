@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"os"
 	"strings"
+
+	"xmlConverter/userInfo"
 	"xmlConverter/xmlLevel"
 
 	"github.com/xuri/excelize/v2"
@@ -26,6 +26,44 @@ import (
 // 7. Process
 
 func main() {
+
+	userInfo := userInfo.NewUserInfo()
+	log.Printf("%+v\n", userInfo)
+
+	// var FilePATH string
+	// var FileNumber int
+	// var FileName string
+	// // var ExcelSheet string
+
+	// f.Println("Excel To XMl Converter")
+	// f.Println("Enter Your Excel File Path :")
+	// f.Scan(&FilePATH)
+
+	// files, err := ioutil.ReadDir(FilePATH)
+	// if err != nil {
+	// 	f.Println(err)
+	// 	return
+	// }
+
+	// for fileIndex, file := range files {
+	// 	f.Printf("%d. %s\n", fileIndex, file.Name())
+	// }
+
+	// for {
+	// 	f.Println("Select Your Excel File Number :")
+	// 	f.Scan(&FileNumber)
+	// 	if FileNumber < len(files) {
+	// 		FileName = files[FileNumber].Name()
+	// 		break
+	// 	} else {
+	// 		f.Println("retry :")
+	// 	}
+	// }
+
+	// f.Println(FileName)
+
+	//
+
 	f, err := excelize.OpenFile("./energyData.xlsx")
 	if err != nil {
 		panic(err)
@@ -88,7 +126,7 @@ func main() {
 
 	}
 
-	log.Printf("%+v\n", SortExcel)
+	// log.Printf("%+v\n", SortExcel)
 
 	totalxml := &xmlLevel.TotalXml{}
 
@@ -155,60 +193,36 @@ func main() {
 
 				}
 
-				// } else if colIndex != 0 && colIndex <= Max_Level {
-
-				// 	before_xml := totalxml.FindXmlTopLevel(SortExcel[rowIndex][0])
-				// 	for serach := 1; serach < colIndex; serach++ {
-				// 		before_xml = before_xml.GetNextLevelByTag(SortExcel[rowIndex][serach])
-				// 	}
-
-				// 	if IsFinalTag {
-				// 		log.Println("final: ", tag)
-				// 		before_xml.SetNextLevel(xmlLevel.NewXmlEnd(tag, SortExcel[rowIndex][InputDataIndex], SortExcel[rowIndex][InputDataUnit], SortExcel[rowIndex][InputDataType], SortExcel[rowIndex][InputDataFormat]))
-				// 		break
-				// 	} else {
-				// 		if before_xml.GetNextLevelByTag(tag) == nil {
-				// 			before_xml.SetNextLevel(xmlLevel.NewXml(tag))
-				// 		} else {
-				// 			breakSi_Gun_Gu
-				// 		}
-				// 	}
-
-				// } else if colIndex == Max_Level {
-				// 	log.Println("colIndex == Max_Level")
-				// 	break
-				// }
-
 			}
 		}
 
 	}
 
-	log.Printf("%+v\n", totalxml.XmlLevels[0].GetNextLevelByTag("Basic_Information").XmlOutPut())
-	var total_xml string
-	total_xml += fmt.Sprintf("<GRschema>")
-	for _, level0 := range totalxml.XmlLevels {
-		total_xml += level0.XmlOutPut()
-	}
-	total_xml += fmt.Sprintf("</GRschema>")
+	// log.Printf("%+v\n", totalxml.XmlLevels[0].GetNextLevelByTag("Basic_Information").XmlOutPut())
+	// var total_xml string
+	// total_xml += fmt.Sprintf("<GRschema>")
+	// for _, level0 := range totalxml.XmlLevels {
+	// 	total_xml += level0.XmlOutPut()
+	// }
+	// total_xml += fmt.Sprintf("</GRschema>")
 
-	log.Printf("\n\n%s\n\n", total_xml)
+	// log.Printf("\n\n%s\n\n", total_xml)
 
-	// Write file
-	ResultFile, err := os.Create("xmlResult.txt")
-	if err != nil {
-		log.Fatalln("Create Result File Error")
-	}
+	// // Write file
+	// ResultFile, err := os.Create("xmlResult.txt")
+	// if err != nil {
+	// 	log.Fatalln("Create Result File Error")
+	// }
 
-	resultWriter := bufio.NewWriter(ResultFile)
+	// resultWriter := bufio.NewWriter(ResultFile)
 
-	resultwriter_bytes, err := resultWriter.WriteString(total_xml)
-	if err != nil {
-		log.Fatalln("resultWriter.WriteString error")
-	} else {
-		log.Printf("resultWriter Write %d bytes", resultwriter_bytes)
-		resultWriter.Flush()
-	}
+	// resultwriter_bytes, err := resultWriter.WriteString(total_xml)
+	// if err != nil {
+	// 	log.Fatalln("resultWriter.WriteString error")
+	// } else {
+	// 	log.Printf("resultWriter Write %d bytes", resultwriter_bytes)
+	// 	resultWriter.Flush()
+	// }
 
 	// Beta_1 Start
 	// var SortExcel [][12]string
