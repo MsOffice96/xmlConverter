@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"xmlConverter/userInfo"
@@ -29,6 +31,8 @@ func main() {
 
 	userInfo := userInfo.NewUserInfo()
 	log.Printf("%+v\n", userInfo)
+
+	userInfo.GetUserInfo()
 
 	// var FilePATH string
 	// var FileNumber int
@@ -198,31 +202,31 @@ func main() {
 
 	}
 
-	// log.Printf("%+v\n", totalxml.XmlLevels[0].GetNextLevelByTag("Basic_Information").XmlOutPut())
-	// var total_xml string
-	// total_xml += fmt.Sprintf("<GRschema>")
-	// for _, level0 := range totalxml.XmlLevels {
-	// 	total_xml += level0.XmlOutPut()
-	// }
-	// total_xml += fmt.Sprintf("</GRschema>")
+	log.Printf("%+v\n", totalxml.XmlLevels[0].GetNextLevelByTag("Basic_Information").XmlOutPut())
+	var total_xml string
+	total_xml += fmt.Sprintf("<GRschema>")
+	for _, level0 := range totalxml.XmlLevels {
+		total_xml += level0.XmlOutPut()
+	}
+	total_xml += fmt.Sprintf("</GRschema>")
 
-	// log.Printf("\n\n%s\n\n", total_xml)
+	log.Printf("\n\n%s\n\n", total_xml)
 
-	// // Write file
-	// ResultFile, err := os.Create("xmlResult.txt")
-	// if err != nil {
-	// 	log.Fatalln("Create Result File Error")
-	// }
+	// Write file
+	ResultFile, err := os.Create("xmlResult.txt")
+	if err != nil {
+		log.Fatalln("Create Result File Error")
+	}
 
-	// resultWriter := bufio.NewWriter(ResultFile)
+	resultWriter := bufio.NewWriter(ResultFile)
 
-	// resultwriter_bytes, err := resultWriter.WriteString(total_xml)
-	// if err != nil {
-	// 	log.Fatalln("resultWriter.WriteString error")
-	// } else {
-	// 	log.Printf("resultWriter Write %d bytes", resultwriter_bytes)
-	// 	resultWriter.Flush()
-	// }
+	resultwriter_bytes, err := resultWriter.WriteString(total_xml)
+	if err != nil {
+		log.Fatalln("resultWriter.WriteString error")
+	} else {
+		log.Printf("resultWriter Write %d bytes", resultwriter_bytes)
+		resultWriter.Flush()
+	}
 
 	// Beta_1 Start
 	// var SortExcel [][12]string
