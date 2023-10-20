@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"xmlConverter/userInfo"
 	"xmlConverter/xmlLevel"
@@ -32,52 +33,15 @@ func main() {
 	userInfo := userInfo.NewUserInfo()
 	log.Printf("%+v\n", userInfo)
 
-	userInfo.GetUserInfo()
-
-	// var FilePATH string
-	// var FileNumber int
-	// var FileName string
-	// // var ExcelSheet string
-
-	// f.Println("Excel To XMl Converter")
-	// f.Println("Enter Your Excel File Path :")
-	// f.Scan(&FilePATH)
-
-	// files, err := ioutil.ReadDir(FilePATH)
-	// if err != nil {
-	// 	f.Println(err)
-	// 	return
-	// }
-
-	// for fileIndex, file := range files {
-	// 	f.Printf("%d. %s\n", fileIndex, file.Name())
-	// }
-
-	// for {
-	// 	f.Println("Select Your Excel File Number :")
-	// 	f.Scan(&FileNumber)
-	// 	if FileNumber < len(files) {
-	// 		FileName = files[FileNumber].Name()
-	// 		break
-	// 	} else {
-	// 		f.Println("retry :")
-	// 	}
-	// }
-
-	// f.Println(FileName)
-
-	//
-
-	f, err := excelize.OpenFile("./energyData.xlsx")
+	f, err := excelize.OpenFile(fmt.Sprintf("%s/%s", userInfo.FilePATH, userInfo.Select_FileName))
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
 
 	sheets := f.GetSheetList()
-	// log.Println("Sheet List: ", sheets)
 
-	rows, err := f.GetRows(sheets[5])
+	rows, err := f.GetRows(sheets[userInfo.ExcelSheet])
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -227,6 +191,9 @@ func main() {
 		log.Printf("resultWriter Write %d bytes", resultwriter_bytes)
 		resultWriter.Flush()
 	}
+
+	log.Println("Finish")
+	time.Sleep(time.Second * 10)
 
 	// Beta_1 Start
 	// var SortExcel [][12]string

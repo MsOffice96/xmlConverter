@@ -25,6 +25,14 @@ func NewUserInfo() *UserInfo {
 	return userInfo
 }
 
+func (u *UserInfo) GetUserInfo() {
+	f.Printf("File PATH: %s\n", u.FilePATH)
+	f.Printf("File PATH File list: %+v \n", u.FilePATH_FileList)
+	f.Printf("Select File Number: %d\n", u.Select_FileNumber)
+	f.Printf("Select File Name: %s\n", u.Select_FileName)
+	f.Printf("Select Excel Sheet : %d\n", u.ExcelSheet)
+}
+
 func (u *UserInfo) SetFilePATH() {
 	for {
 		f.Println("Enter Your Excel File Path :")
@@ -48,7 +56,6 @@ func (u *UserInfo) SetFileNumber() {
 		f.Println("\nSelect Your Excel File Number :")
 		f.Scan(&u.Select_FileNumber)
 		if u.Select_FileNumber < len(u.FilePATH_FileList) {
-			// u.Select_FileName = u.FilePATH_FileList[u.Select_FileNumber].Name()
 			u.SetFileName(u.FilePATH_FileList[u.Select_FileNumber].Name())
 			break
 		} else {
@@ -64,8 +71,8 @@ func (u *UserInfo) SetFileName(FileName string) {
 func (u *UserInfo) SetExcelSheet() {
 	for {
 		//
-		full_Path := f.Sprintf("%s/%s", u.FilePATH, u.Select_FileName)
-		f.Printf("===========\t %s ", full_Path)
+		// full_Path := f.Sprintf("%s/%s", u.FilePATH, u.Select_FileName)
+		// f.Printf("===========\t %s ", full_Path)
 		//
 
 		excelfile, err := excelize.OpenFile(u.FilePATH + "/" + u.Select_FileName)
@@ -84,12 +91,4 @@ func (u *UserInfo) SetExcelSheet() {
 			f.Printf("Invalid Excel Sheet Number")
 		}
 	}
-}
-
-func (u *UserInfo) GetUserInfo() {
-	f.Printf("File PATH: %s\n", u.FilePATH)
-	f.Printf("File PATH File list: %+v \n", u.FilePATH_FileList)
-	f.Printf("Select File Number: %d\n", u.Select_FileNumber)
-	f.Printf("Select File Name: %s\n", u.Select_FileName)
-	f.Printf("Select Excel Sheet : %d\n", u.ExcelSheet)
 }
