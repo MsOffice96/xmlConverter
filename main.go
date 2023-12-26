@@ -26,7 +26,7 @@ import (
 // if (Type == "") {not use Type}
 // if (Format == "")
 
-// 7. Process
+// 7. Execute
 
 func main() {
 

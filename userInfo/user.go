@@ -70,10 +70,6 @@ func (u *UserInfo) SetFileName(FileName string) {
 
 func (u *UserInfo) SetExcelSheet() {
 	for {
-		//
-		// full_Path := f.Sprintf("%s/%s", u.FilePATH, u.Select_FileName)
-		// f.Printf("===========\t %s ", full_Path)
-		//
 
 		excelfile, err := excelize.OpenFile(u.FilePATH + "/" + u.Select_FileName)
 		if err != nil {
