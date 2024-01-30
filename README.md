@@ -78,7 +78,7 @@ Level의 Tag값에 xml 형식에 유효하지 않는 character가 포함되어 �
 추후 추가 되어야될 character가 있을 경우 추가해야된다.  
 | Before character | After character | 
 |---|---|
-|   | _ (under bar) |
+|  (blank) | _ (under bar) |
 | / | _ |
 | ( | _ |
 | ) | _ |
