@@ -71,8 +71,6 @@ func main() {
 
 				renewal_colData = strings.Replace(colData, " ", "_", -1)
 				renewal_colData = strings.Replace(renewal_colData, "/", "_", -1)
-
-				// 임시 string 대체
 				renewal_colData = strings.Replace(renewal_colData, "(", "_", -1)
 				renewal_colData = strings.Replace(renewal_colData, ")", "_", -1)
 				renewal_colData = strings.Replace(renewal_colData, "&", "_", -1)
@@ -80,10 +78,7 @@ func main() {
 				renewal_colData = strings.Replace(renewal_colData, "%", "_", -1)
 				renewal_colData = strings.Replace(renewal_colData, "°", "_", -1)
 				renewal_colData = strings.Replace(renewal_colData, "–", "_", -1)
-				// Level Tag 에는 45가 들어가면 안됨. 따라서 어떻게 할지 상의 필요
-				renewal_colData = strings.Replace(renewal_colData, "45_", "parameter", -1)
 
-				// colDatas[colDataNum] = colData
 				colDatas[colDataNum] = renewal_colData
 			} else {
 				colDatas[colDataNum] = colData
@@ -94,15 +89,7 @@ func main() {
 
 	}
 
-	// log.Printf("%+v\n", SortExcel)
-
 	totalxml := &xmlLevel.TotalXml{}
-
-	// log.Println(len(SortExcel))
-	// for _, ro := range SortExcel {
-	// 	log.Println(ro)
-	// }
-	// log.Println(len(SortExcel[0]))
 
 	for rowIndex, row := range SortExcel {
 		if rowIndex != 0 {
@@ -113,11 +100,6 @@ func main() {
 				if row[colIndex+1] == "" || colIndex == Max_Level {
 					IsFinalTag = true
 				}
-
-				// if IsFinalTag {
-				// 	log.Println("Datas", row[InputDataIndex], row[InputDataUnit], row[InputDataType], row[InputDataFormat])
-				// 	break
-				// }
 
 				if colIndex == 0 {
 					if IsFinalTag {
@@ -166,13 +148,10 @@ func main() {
 
 	}
 
-	log.Printf("%+v\n", totalxml.XmlLevels[0].GetNextLevelByTag("Basic_Information").XmlOutPut())
 	var total_xml string
-	total_xml += fmt.Sprintf("<GRschema>")
 	for _, level0 := range totalxml.XmlLevels {
 		total_xml += level0.XmlOutPut()
 	}
-	total_xml += fmt.Sprintf("</GRschema>")
 
 	log.Printf("\n\n%s\n\n", total_xml)
 
@@ -193,7 +172,7 @@ func main() {
 	}
 
 	log.Println("Finish")
-	time.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 1)
 
 	// Beta_1 Start
 	// var SortExcel [][12]string
